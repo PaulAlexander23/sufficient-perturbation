@@ -3,8 +3,15 @@
 *.a
 *.out
 bubble_steady
+bubble_steady_weakly_nonlinear
 bubble_unsteady
-bubble_weakly_nonlinear
 
 # Data files
 *.dat
+
+# Hidden files
+.*
+
+# Makefiles
+Makefile
+Makefile.in
