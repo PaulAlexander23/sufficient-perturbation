@@ -1,0 +1,10 @@
+# 
+*.o
+*.a
+*.out
+bubble_steady
+bubble_unsteady
+bubble_weakly_nonlinear
+
+# Data files
+*.dat

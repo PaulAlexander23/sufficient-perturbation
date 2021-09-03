@@ -1,0 +1,31 @@
+INSTRUCTIONS//
+
+1) Download oomph-lib from http://oomph-lib.maths.man.ac.uk/doc/html/index.html and unzip the contents. Rename this folder oomph-lib
+2) Download trillinos (see links in website above)
+3) Place trillinos tar file in oomph-lib/external_distributions/trillinos/
+4) Place files in jsk_src_generic/ to oomph-lib/src/generic/
+5) Place files in jsk_src_meshes/ to oomph-lib/src/meshes/
+5) Place RSPA_user_drivers folder to oomph-lib/user_drivers/
+6) Run ./autogen.sh in parent directory and follow prompts
+7) Go to oomph-lib/user_drivers/RSPA_user_drivers/ and type 'make'
+8) Now you have created the executables required and just need to execute one of the codes described below:
+
+1) ./bubble_steady - Calculates a steady solution and continues a solution branch from a given restart file given as a command line argument.
+
+2) ./bubble_unsteady - Starts from an arbitrary initial condition and time-steps. Choose the parameters for a given initial condition when prompted.
+
+3) ./bubble_steady_weakly_nonlinear - Calculates the Landau coefficients from the restart_H1 and restart_H2 files. For converged results perform a bisection but this will take a long time...
+
+RESTART FILES//
+
+The restart files can be used to read in a solution for bubble_steady and bubble_steady_weakly_nonlinear.
+
+e.g. on the command line
+
+./bubble_steady restart_S1.dat 
+
+will restart a solution branch from the S1 solution (see reference_figure.pdf for a correspondence to each solution) whilst
+
+./bubble_steady_weakly_nonlinear restart_H1.dat
+
+will calculate the Landau coefficients for the H1 point.
