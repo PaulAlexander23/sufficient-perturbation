@@ -1,4 +1,8 @@
-INSTRUCTIONS//
+# Hele-Shaw bubble
+
+Extracted from the suplementary material for the article "The influence of invariant solutions on the transient behaviour of an air bubble in a Hele-Shaw channel." published in Proc. R. Soc. A, 2019 by J. S. Keeler et al.
+
+## INSTRUCTIONS
 
 1) Download oomph-lib from http://oomph-lib.maths.man.ac.uk/doc/html/index.html and unzip the contents. Rename this folder oomph-lib
 2) Download trillinos (see links in website above)
