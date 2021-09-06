@@ -5112,8 +5112,9 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
   std::cout << " " << std::endl;
   std::cout << "Creating l_hat for varphi_0..." << std::endl;
 
-  // Create the complex mass matrix and multiply by mult
-  complex<double> mult = 2 * 1i * omega_c;
+  //Create the complex mass matrix and multiply by mult
+  complex<double> mult = complex<double>(2)*1i*omega_c;
+
   CRComplexMatrix mass_complex;
   CRComplexMatrix linear_operator;
   // At this stage we have mass and jacobian
@@ -6201,9 +6202,9 @@ void BubbleInChannelProblem<ELEMENT>::test_complex_identity_matrix()
 
   // The number of non-zero entries for the mass matrix
   unsigned long nnz = mass.nnz();
-
-  // The multiplier
-  complex<double> mult = 2 * 1i;
+ 
+  //The multiplier
+  complex<double> mult = complex<double>(2)*1i;
 
   // Vectors for the CRDouble mass matrix
   double* values = mass.value();
