@@ -777,9 +777,6 @@ BubbleInChannelProblem<ELEMENT>::BubbleInChannelProblem()
   Desired_newton_iterations_ds = 100;
   ///=============================
 
-  // Output directory
-  Problem_Parameter::Doc_info.set_directory("RESLT");
-
   // Allocate the timestepper -- this constructs the Problem's
   // time object with a sufficient amount of storage to store the
   // previous timsteps.

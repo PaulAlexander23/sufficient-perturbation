@@ -473,7 +473,7 @@ public:
     double evalue_real;
     double evalue_imag;
 
-    sprintf(filename, "RESLT/eigenvectors_%i.dat", mode);
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(), mode);
     indata.open(filename);
     indata.precision(20);
 
@@ -484,7 +484,7 @@ public:
 
     indata.close();
 
-    sprintf(filename, "RESLT/eigenvectors_%i.dat", mode + 1);
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(), mode + 1);
 
     indata.open(filename);
     indata.precision(20);
@@ -501,7 +501,7 @@ public:
       g[i] = g_real[i] + 1i * g_imag[i];
     }
 
-    sprintf(filename, "RESLT/eigenvalues_0.dat");
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvalues_0.dat").c_str());
     indata.open(filename);
     indata.precision(20);
 
@@ -526,7 +526,7 @@ public:
     double evalue_real;
     double evalue_imag;
 
-    sprintf(filename, "RESLT/eigenvectors_adjoint_%i.dat", mode);
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat").c_str(), mode);
     indata.open(filename);
     indata.precision(20);
 
@@ -537,7 +537,7 @@ public:
 
     indata.close();
 
-    sprintf(filename, "RESLT/eigenvectors_adjoint_%i.dat", mode + 1);
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat").c_str(), mode + 1);
 
     indata.open(filename);
     indata.precision(20);
@@ -554,7 +554,7 @@ public:
       g[i] = g_real[i] + 1i * g_imag[i];
     }
 
-    sprintf(filename, "RESLT/eigenvalues_adjoint_0.dat");
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvalues_adjoint_0.dat").c_str());
     indata.open(filename);
     indata.precision(20);
 
@@ -780,7 +780,7 @@ public:
 
     ofstream outdata;
     char filename[100];
-    sprintf(filename, "RESLT/eigenmode_data.dat");
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenmode_data.dat").c_str());
     outdata.open(filename);
     for (int m = 0; m < N_theta; m++)
     {
@@ -1003,7 +1003,7 @@ public:
 
     ofstream outdata;
     char filename[100];
-    sprintf(filename, "RESLT/result_%i.dat", m);
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "result_%i.dat").c_str(), m);
 
     outdata.open(filename);
     for (int i = 0; i < N; i++)
@@ -1105,7 +1105,7 @@ public:
 
     ofstream outdata;
     char filename[100];
-    sprintf(filename, "RESLT/result_%i.dat", m);
+    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "result_%i.dat").c_str(), m);
 
     outdata.open(filename);
     for (int i = 0; i < N; i++)
@@ -2693,7 +2693,7 @@ public:
 
     for (int i = 0; i < n_evals; i++)
     {
-      sprintf(filename, "RESLT/eigenvectors_%i.dat", i);
+      sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(), i);
       some_file.open(filename);
       some_file.precision(20);
       for (int j = 0; j < n_dof; j++)
@@ -2707,7 +2707,7 @@ public:
 
 
     sprintf(filename,
-            "RESLT/eigenvalues_%i.dat",
+            (Problem_Parameter::Doc_info.directory() + "eigenvalues_%i.dat").c_str(),
             Problem_Parameter::Doc_info.number());
     some_file.open(filename);
     some_file.precision(20);
@@ -2731,7 +2731,7 @@ public:
 
     for (int i = 0; i < n_evals; i++)
     {
-      sprintf(filename, "RESLT/eigenvectors_adjoint_%i.dat", i);
+      sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat").c_str(), i);
       some_file.open(filename);
       some_file.precision(20);
 
@@ -2746,7 +2746,7 @@ public:
 
 
     sprintf(filename,
-            "RESLT/eigenvalues_adjoint_%i.dat",
+            (Problem_Parameter::Doc_info.directory() + "eigenvalues_adjoint_%i.dat").c_str(),
             Problem_Parameter::Doc_info.number());
     some_file.open(filename);
     some_file.precision(20);
@@ -2776,7 +2776,7 @@ public:
 
     std::cout << "Now write mass matrix to file " << std::endl;
     sprintf(filename,
-            "RESLT/mass_matrix_%i.dat",
+            (Problem_Parameter::Doc_info.directory() + "mass_matrix_%i.dat").c_str(),
             Problem_Parameter::Doc_info.number());
 
     some_file.open(filename);
@@ -2791,7 +2791,7 @@ public:
 
     std::cout << "Now write jacobian matrix to file " << std::endl;
     sprintf(filename,
-            "RESLT/jacobian_matrix_%i.dat",
+            (Problem_Parameter::Doc_info.directory() + "jacobian_matrix_%i.dat").c_str(),
             Problem_Parameter::Doc_info.number());
 
     some_file.open(filename);
@@ -3499,9 +3499,6 @@ BubbleInChannelProblem<ELEMENT>::BubbleInChannelProblem()
   Bisect_to_find_bifurcation = false;
   Desired_newton_iterations_ds = 1;
   ///=============================
-
-  // Output directory
-  Problem_Parameter::Doc_info.set_directory("RESLT");
 
   // Allocate the timestepper -- this constructs the Problem's
   // time object with a sufficient amount of storage to store the
@@ -4927,7 +4924,7 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_steady_fourth_order_solution(
 
   ofstream outdata;
   char filename[100];
-  sprintf(filename, "RESLT/varphi_3.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_3.dat").c_str());
   outdata.open(filename);
   for (int i = 0; i < N; i++)
   {
@@ -5151,7 +5148,7 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
   std::cout << " " << std::endl;
   std::cout << "varphi_0 has been calculated" << std::endl;
 
-  sprintf(filename, "RESLT/varphi_0.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_0.dat").c_str());
 
   outdata.open(filename);
 
@@ -5274,7 +5271,7 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
     result[i] = 0.0;
   }
 
-  sprintf(filename, "RESLT/varphi_1.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_1.dat").c_str());
 
   outdata.open(filename);
 
@@ -5337,7 +5334,7 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
     f_real_temp[i] = 0.0;
   }
 
-  sprintf(filename, "RESLT/varphi_2.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_2.dat").c_str());
 
   outdata.open(filename);
 
@@ -5791,7 +5788,7 @@ void BubbleInChannelProblem<ELEMENT>::mult_constant(CRComplexMatrix& A,
   ofstream outdata;
   char filename[100];
 
-  sprintf(filename, "RESLT/grifter1.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "grifter1.dat").c_str());
   outdata.open(filename);
 
   A.sparse_indexed_output_helper(outdata);
@@ -5848,7 +5845,7 @@ void BubbleInChannelProblem<ELEMENT>::mult_constant(CRDoubleMatrix& A,
   identity.build(ncol, values, column_indices, row_start);
 
   // Output the CRDouble identity
-  identity.sparse_indexed_output_with_offset("RESLT/sparse_identity.dat");
+  identity.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_identity.dat");
 
   // Multiply
 
@@ -5930,7 +5927,7 @@ void BubbleInChannelProblem<ELEMENT>::test_hessian_product(DoubleVector& g,
 
   ofstream outfile;
   char filename[100];
-  sprintf(filename, "RESLT/test_hessian.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "test_hessian.dat").c_str());
   outfile.open(filename);
   for (int i = 0; i < N; i++)
   {
@@ -6040,10 +6037,10 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_mass_matrix(
   unsigned N = mass.nrow_local();
 
   // Output the CRDouble mass
-  mass.sparse_indexed_output_with_offset("RESLT/sparse_mass.dat");
+  mass.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
 
   // Output the CRDouble jacobian
-  jacobian.sparse_indexed_output_with_offset("RESLT/sparse_jacobian.dat");
+  jacobian.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_jacobian.dat");
 
   // Create vector of values and the pointer
   Vector<complex<double>> value(nnz);
@@ -6074,7 +6071,7 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_mass_matrix(
   // Output the CRComplexMatrix
   ofstream outdata;
   char filename[100];
-  sprintf(filename, "RESLT/sparse_complex_mass.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "sparse_complex_mass.dat").c_str());
   outdata.open(filename);
   for (long int i = 0; i < N; i++)
   {
@@ -6106,10 +6103,10 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_jacobian_matrix(
   unsigned N = jacobian.nrow_local();
 
   // Output the CRDouble mass
-  mass.sparse_indexed_output_with_offset("RESLT/sparse_mass.dat");
+  mass.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
 
   // Output the CRDouble jacobian
-  jacobian.sparse_indexed_output_with_offset("RESLT/sparse_jacobian.dat");
+  jacobian.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_jacobian.dat");
 
   // Create vector of values and the pointer
   Vector<complex<double>> value(nnz);
@@ -6140,7 +6137,7 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_jacobian_matrix(
   // Output the CRComplexMatrix
   ofstream outdata;
   char filename[100];
-  sprintf(filename, "RESLT/sparse_complex_jacobian.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "sparse_complex_jacobian.dat").c_str());
   outdata.open(filename);
   for (long int i = 0; i < N; i++)
   {
@@ -6211,7 +6208,7 @@ void BubbleInChannelProblem<ELEMENT>::test_complex_identity_matrix()
   unsigned N = mass.nrow_local();
 
   // Output the CRDouble mass
-  mass.sparse_indexed_output_with_offset("RESLT/sparse_mass.dat");
+  mass.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
 
   // Create vector of values
   Vector<complex<double>> value(nnz);
@@ -6243,7 +6240,7 @@ void BubbleInChannelProblem<ELEMENT>::test_complex_identity_matrix()
   // Output the CRComplexMatrix
   ofstream outdata;
   char filename[100];
-  sprintf(filename, "RESLT/sparse_complex_mass.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "sparse_complex_mass.dat").c_str());
   outdata.open(filename);
   mass_complex.sparse_indexed_output_helper(outdata);
   outdata.close();
@@ -6288,7 +6285,7 @@ void BubbleInChannelProblem<ELEMENT>::test_mass_matrix(
 
   ofstream outdata;
   char filename[100];
-  sprintf(filename, "RESLT/mass_g.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "mass_g.dat").c_str());
 
   outdata.open(filename);
   for (int i = 0; i < N; i++)

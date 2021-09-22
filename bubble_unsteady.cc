@@ -154,15 +154,18 @@ int main(int argc, char** argv)
   Problem_Parameter::Constitutive_law_pt =
     new GeneralisedHookean(&Problem_Parameter::Nu);
 
+  // Output directory
+  Problem_Parameter::Doc_info.set_directory("data/bubble_unsteady/");
+
   // Open trace file
-  Problem_Parameter::Trace_file.open("RESLT/trace_bubble_test.dat");
+  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() + "trace_bubble_test.dat");
   // Increase precision of output
   Problem_Parameter::Trace_file.precision(20);
 
   // Open norm file
-  Problem_Parameter::Norm_file.open("RESLT/norm.dat");
-  Problem_Parameter::OccluHeight_file.open("RESLT/Occlusion_Height.dat");
-  Problem_Parameter::UpperWall_file.open("RESLT/UpperWall_Trace.dat");
+  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() + "norm.dat");
+  Problem_Parameter::OccluHeight_file.open(Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
+  Problem_Parameter::UpperWall_file.open(Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
 
   Problem_Parameter::Length = 4;
   /// Sets Volume of Initial Condition
@@ -218,7 +221,7 @@ int main(int argc, char** argv)
 
   ofstream some_file;
   char filename[100];
-  sprintf(filename, "RESLT/initial.dat");
+  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "initial.dat").c_str());
   some_file.open(filename);
   some_file << Problem_Parameter::Major_Radius << " "
             << Problem_Parameter::Minor_Radius << " "
