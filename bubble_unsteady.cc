@@ -41,6 +41,7 @@
 using namespace std;
 using namespace oomph;
 
+#include "problem_parameter.h"
 #include "hele_shaw_interface_elements_with_integrals.h"
 #include "Thele_shaw_elements.h"
 #include "hele_shaw_flux_elements.h"
@@ -149,33 +150,63 @@ int main(int argc, char** argv)
   MPI_Helpers::init(argc, argv);
 #endif
 
+  unsigned n_steps = 150;
+  double maj_rad;
+  double CoM_unsteady;
+  double Q_unsteady;
+  string output_directory = "";
+  bool has_unrecognised_arg = false;
+
+  // REQUIRED
+  CommandLineArgs::specify_command_line_flag(
+    "-n", &n_steps, "Number of time steps");
+  CommandLineArgs::specify_command_line_flag(
+    "-r", &maj_rad, "Bubble major radius");
+  CommandLineArgs::specify_command_line_flag(
+    "-c", &CoM_unsteady, "Bubble centre of mass offset");
+  CommandLineArgs::specify_command_line_flag(
+    "-q", &Q_unsteady, "Channel flux, Q");
+
+  // OPTIONAL
+  CommandLineArgs::specify_command_line_flag(
+    "-o",
+    &output_directory,
+    "Optional: Output directory (e.g. data/bubble_unsteady/ )");
+
+  CommandLineArgs::parse_and_assign(argc, argv, &has_unrecognised_arg);
+
+  if (output_directory != "")
+  {
+    Problem_Parameter::Doc_info.set_directory(output_directory);
+  }
+  else
+  {
+    Problem_Parameter::Doc_info.set_directory("data/bubble_unsteady/");
+  }
+
 
   // Create generalised Hookean constitutive equations
   Problem_Parameter::Constitutive_law_pt =
     new GeneralisedHookean(&Problem_Parameter::Nu);
 
-  // Output directory
-  Problem_Parameter::Doc_info.set_directory("data/bubble_unsteady/");
-
   // Open trace file
-  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() + "trace_bubble_test.dat");
+  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() +
+                                     "trace_bubble_test.dat");
   // Increase precision of output
   Problem_Parameter::Trace_file.precision(20);
 
   // Open norm file
-  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() + "norm.dat");
-  Problem_Parameter::OccluHeight_file.open(Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
-  Problem_Parameter::UpperWall_file.open(Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
+  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() +
+                                    "norm.dat");
+  Problem_Parameter::OccluHeight_file.open(
+    Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
+  Problem_Parameter::UpperWall_file.open(
+    Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
 
   Problem_Parameter::Length = 4;
   /// Sets Volume of Initial Condition
   double rad = 0.46;
   double vol = MathematicalConstants::Pi * rad * rad;
-
-  double maj_rad;
-  std::cout << "What Major radius do you want? " << std::endl;
-  std::cin >> maj_rad;
-
 
   Problem_Parameter::Major_Radius =
     maj_rad; //*0.46//Ellipse1 = 0.5,Ellipse2=0.6,Ellipse3=0.9
@@ -192,18 +223,8 @@ int main(int argc, char** argv)
             << std::endl;
 
 
-  double CoM_unsteady;
-  std::cout << "What CoM do you want? " << std::endl;
-  std::cin >> CoM_unsteady;
-
   Problem_Parameter::ycenter = CoM_unsteady;
   Problem_Parameter::circpts = 64.0;
-
-  double Q_unsteady;
-  std::cout << "What value of Q do you want? " << std::endl;
-  std::cin >> Q_unsteady;
-
-  double n_steps = 150;
 
   /// The system is currently set up with 12 integral measures (search for
   /// i_measure in hele_shaw_interface_elements_with_integrals.h). But that
@@ -221,7 +242,8 @@ int main(int argc, char** argv)
 
   ofstream some_file;
   char filename[100];
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "initial.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "initial.dat").c_str());
   some_file.open(filename);
   some_file << Problem_Parameter::Major_Radius << " "
             << Problem_Parameter::Minor_Radius << " "

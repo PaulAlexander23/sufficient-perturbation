@@ -177,7 +177,10 @@ public:
     double evalue_real;
     double evalue_imag;
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(), mode);
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(),
+      mode);
     indata.open(filename);
 
     for (int i = 0; i < ndof; i++)
@@ -187,7 +190,10 @@ public:
 
     indata.close();
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(), mode + 1);
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(),
+      mode + 1);
 
     indata.open(filename);
 
@@ -203,7 +209,9 @@ public:
       g[i] = g_real[i] + 1i * g_imag[i];
     }
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvalues_0.dat").c_str());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvalues_0.dat").c_str());
     indata.open(filename);
 
     indata >> evalue_real;
@@ -227,7 +235,11 @@ public:
     double evalue_real;
     double evalue_imag;
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat").c_str(), mode);
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat")
+        .c_str(),
+      mode);
     indata.open(filename);
 
     for (int i = 0; i < ndof; i++)
@@ -237,7 +249,11 @@ public:
 
     indata.close();
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat").c_str(), mode + 1);
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat")
+        .c_str(),
+      mode + 1);
 
     indata.open(filename);
 
@@ -253,7 +269,10 @@ public:
       g[i] = g_real[i] + 1i * g_imag[i];
     }
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvalues_adjoint_0.dat").c_str());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvalues_adjoint_0.dat")
+        .c_str());
     indata.open(filename);
 
     indata >> evalue_real;
@@ -497,7 +516,10 @@ public:
 
     ofstream outdata;
     char filename[100];
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenmode_data_com_y.dat").c_str());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenmode_data_com_y.dat")
+        .c_str());
     outdata.open(filename);
     for (int l = 0; l < N_eps; l++)
     {
@@ -525,7 +547,11 @@ public:
     for (int j = 0; j < N_theta; j++)
     {
       epsilon = 0.0;
-      sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenmode_data_eps_theta_%i.dat").c_str(), j);
+      sprintf(filename,
+              (Problem_Parameter::Doc_info.directory() +
+               "eigenmode_data_eps_theta_%i.dat")
+                .c_str(),
+              j);
       outdata.open(filename);
       for (int m = 0; m < 30; m++)
       {
@@ -761,7 +787,9 @@ public:
 
     ofstream outdata;
     char filename[100];
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "result_%i.dat").c_str(), m);
+    sprintf(filename,
+            (Problem_Parameter::Doc_info.directory() + "result_%i.dat").c_str(),
+            m);
 
     outdata.open(filename);
     for (int i = 0; i < N; i++)
@@ -863,7 +891,9 @@ public:
 
     ofstream outdata;
     char filename[100];
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "result_%i.dat").c_str(), m);
+    sprintf(filename,
+            (Problem_Parameter::Doc_info.directory() + "result_%i.dat").c_str(),
+            m);
 
     outdata.open(filename);
     for (int i = 0; i < N; i++)
@@ -1496,7 +1526,9 @@ public:
     ofstream some_file;
     char filename[100];
 
-    sprintf(filename, (Problem_Parameter::Doc_info.directory() + "perturbation.dat").c_str());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "perturbation.dat").c_str());
 
     some_file.open(filename);
     some_file << eigenmode << " " << eps << " "
@@ -2435,7 +2467,10 @@ public:
 
     for (int i = 0; i < n_evals; i++)
     {
-      sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat").c_str(), i);
+      sprintf(filename,
+              (Problem_Parameter::Doc_info.directory() + "eigenvectors_%i.dat")
+                .c_str(),
+              i);
       some_file.open(filename);
 
       for (int j = 0; j < n_dof; j++)
@@ -2448,9 +2483,10 @@ public:
     }
 
 
-    sprintf(filename,
-            (Problem_Parameter::Doc_info.directory() + "eigenvalues_%i.dat").c_str(),
-            Problem_Parameter::Doc_info.number());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvalues_%i.dat").c_str(),
+      Problem_Parameter::Doc_info.number());
     some_file.open(filename);
 
     for (int i = 0; i < n_evals; i++)
@@ -2472,7 +2508,11 @@ public:
 
     for (int i = 0; i < n_evals; i++)
     {
-      sprintf(filename, (Problem_Parameter::Doc_info.directory() + "eigenvectors_adjoint_%i.dat").c_str(), i);
+      sprintf(filename,
+              (Problem_Parameter::Doc_info.directory() +
+               "eigenvectors_adjoint_%i.dat")
+                .c_str(),
+              i);
       some_file.open(filename);
 
       for (int j = 0; j < n_dof; j++)
@@ -2485,9 +2525,11 @@ public:
     }
 
 
-    sprintf(filename,
-            (Problem_Parameter::Doc_info.directory() + "eigenvalues_adjoint_%i.dat").c_str(),
-            Problem_Parameter::Doc_info.number());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "eigenvalues_adjoint_%i.dat")
+        .c_str(),
+      Problem_Parameter::Doc_info.number());
     some_file.open(filename);
 
     for (int i = 0; i < n_evals; i++)
@@ -2514,9 +2556,10 @@ public:
     char filename[100];
 
     std::cout << "Now write mass matrix to file " << std::endl;
-    sprintf(filename,
-            (Problem_Parameter::Doc_info.directory() + "mass_matrix_%i.dat").c_str(),
-            Problem_Parameter::Doc_info.number());
+    sprintf(
+      filename,
+      (Problem_Parameter::Doc_info.directory() + "mass_matrix_%i.dat").c_str(),
+      Problem_Parameter::Doc_info.number());
 
     some_file.open(filename);
     for (int i = 0; i < n_dof; i++)
@@ -2530,7 +2573,8 @@ public:
 
     std::cout << "Now write jacobian matrix to file " << std::endl;
     sprintf(filename,
-            (Problem_Parameter::Doc_info.directory() + "jacobian_matrix_%i.dat").c_str(),
+            (Problem_Parameter::Doc_info.directory() + "jacobian_matrix_%i.dat")
+              .c_str(),
             Problem_Parameter::Doc_info.number());
 
     some_file.open(filename);
@@ -4747,7 +4791,8 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_steady_fourth_order_solution(
 
   ofstream outdata;
   char filename[100];
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_4.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "varphi_4.dat").c_str());
   outdata.open(filename);
   for (int i = 0; i < N; i++)
   {
@@ -4878,8 +4923,8 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
   std::cout << " " << std::endl;
   std::cout << "Creating l_hat for varphi_0...";
 
-  //Create the complex mass matrix and multiply by mult
-  complex<double> mult = complex<double>(2)*1i*omega_c;
+  // Create the complex mass matrix and multiply by mult
+  complex<double> mult = complex<double>(2) * 1i * omega_c;
 
   CRComplexMatrix l_hat;
 
@@ -4916,7 +4961,8 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
   std::cout << " " << std::endl;
   std::cout << "varphi_0 has been calculated" << std::endl;
 
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_0.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "varphi_0.dat").c_str());
 
   outdata.open(filename);
 
@@ -4999,7 +5045,8 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
     result[i] = 0.0;
   }
 
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_2.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "varphi_2.dat").c_str());
 
   outdata.open(filename);
 
@@ -5046,7 +5093,8 @@ void BubbleInChannelProblem<ELEMENT>::fill_in_second_order_solution(
     f_real_temp[i] = 0.0;
   }
 
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "varphi_3.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "varphi_3.dat").c_str());
 
   outdata.open(filename);
 
@@ -5241,7 +5289,8 @@ void BubbleInChannelProblem<ELEMENT>::mult_constant(CRComplexMatrix& A,
   ofstream outdata;
   char filename[100];
 
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "Rgrifter1.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "Rgrifter1.dat").c_str());
   outdata.open(filename);
 
   A.sparse_indexed_output_helper(outdata);
@@ -5405,10 +5454,12 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_mass_matrix(
   unsigned N = mass.nrow_local();
 
   // Output the CRDouble mass
-  mass.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
+  mass.sparse_indexed_output_with_offset(
+    Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
 
   // Output the CRDouble jacobian
-  jacobian.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_jacobian.dat");
+  jacobian.sparse_indexed_output_with_offset(
+    Problem_Parameter::Doc_info.directory() + "sparse_jacobian.dat");
 
   // Create vector of values and the pointer
   Vector<complex<double>> value(nnz);
@@ -5439,7 +5490,9 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_mass_matrix(
   // Output the CRComplexMatrix
   ofstream outdata;
   char filename[100];
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "sparse_complex_mass.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "sparse_complex_mass.dat")
+            .c_str());
   outdata.open(filename);
   for (long int i = 0; i < N; i++)
   {
@@ -5471,10 +5524,12 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_jacobian_matrix(
   unsigned N = jacobian.nrow_local();
 
   // Output the CRDouble mass
-  mass.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
+  mass.sparse_indexed_output_with_offset(
+    Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
 
   // Output the CRDouble jacobian
-  jacobian.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_jacobian.dat");
+  jacobian.sparse_indexed_output_with_offset(
+    Problem_Parameter::Doc_info.directory() + "sparse_jacobian.dat");
 
   // Create vector of values and the pointer
   Vector<complex<double>> value(nnz);
@@ -5505,7 +5560,10 @@ void BubbleInChannelProblem<ELEMENT>::create_complex_jacobian_matrix(
   // Output the CRComplexMatrix
   ofstream outdata;
   char filename[100];
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "sparse_complex_jacobian.dat").c_str());
+  sprintf(
+    filename,
+    (Problem_Parameter::Doc_info.directory() + "sparse_complex_jacobian.dat")
+      .c_str());
   outdata.open(filename);
   for (long int i = 0; i < N; i++)
   {
@@ -5548,6 +5606,7 @@ void BubbleInChannelProblem<ELEMENT>::test_complex_solve()
   rhs[0] = 1.0 - 2.0 * 1i;
   rhs[1] = -1.0 + 3.0 * 1i;
 
+  cout << "test.solve(rhs, result);" << endl;
   test.solve(rhs, result);
 
   std::cout << "x is " << result[0] << std::endl;
@@ -5567,16 +5626,17 @@ void BubbleInChannelProblem<ELEMENT>::test_complex_identity_matrix()
 
   // The number of non-zero entries for the mass matrix
   unsigned long nnz = mass.nnz();
- 
-  //The multiplier
-  complex<double> mult = complex<double>(2)*1i;
+
+  // The multiplier
+  complex<double> mult = complex<double>(2) * 1i;
 
   // Vectors for the CRDouble mass matrix
   double* values = mass.value();
   unsigned N = mass.nrow_local();
 
   // Output the CRDouble mass
-  mass.sparse_indexed_output_with_offset(Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
+  mass.sparse_indexed_output_with_offset(
+    Problem_Parameter::Doc_info.directory() + "sparse_mass.dat");
 
   // Create vector of values
   Vector<complex<double>> value(nnz);
@@ -5608,10 +5668,15 @@ void BubbleInChannelProblem<ELEMENT>::test_complex_identity_matrix()
   // Output the CRComplexMatrix
   ofstream outdata;
   char filename[100];
-  sprintf(filename, (Problem_Parameter::Doc_info.directory() + "sparse_complex_mass.dat").c_str());
+  sprintf(filename,
+          (Problem_Parameter::Doc_info.directory() + "sparse_complex_mass.dat")
+            .c_str());
   outdata.open(filename);
   mass_complex.sparse_indexed_output_helper(outdata);
   outdata.close();
+
+  cout << "mass_complex.multiply(mass_complex,mass_complex);" << endl;
+  mass_complex.multiply(mass_complex, mass_complex);
 }
 
 template<class ELEMENT>
@@ -5631,7 +5696,7 @@ template<class ELEMENT>
 void BubbleInChannelProblem<ELEMENT>::set_initial_condition()
 {
   ifstream* restart_file_pt =
-    new ifstream(CommandLineArgs::Argv[1], ios_base::in);
+    new ifstream(Problem_Parameter::restart_input_filename, ios_base::in);
   restart(*restart_file_pt);
 }
 
@@ -5639,6 +5704,6 @@ template<class ELEMENT>
 void BubbleInChannelProblem<ELEMENT>::set_initial_condition_asymm()
 {
   ifstream* restart_file_pt =
-    new ifstream(CommandLineArgs::Argv[2], ios_base::in);
+    new ifstream(Problem_Parameter::restart_input_filename, ios_base::in);
   restart(*restart_file_pt);
 }

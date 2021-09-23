@@ -46,6 +46,7 @@
 using namespace std;
 using namespace oomph;
 
+#include "problem_parameter.h"
 #include "hele_shaw_interface_elements_with_integrals.h"
 #include "Thele_shaw_elements.h"
 #include "hele_shaw_flux_elements.h"
@@ -220,24 +221,52 @@ int main(int argc, char** argv)
   MPI_Helpers::init(argc, argv);
 #endif
 
-  CommandLineArgs::setup(argc, argv);
+  unsigned number_of_continuation_steps = 4;
+  string filename = "";
+  string output_directory = "";
+  bool has_unrecognised_arg = false;
+
+  // REQUIRED
+  CommandLineArgs::specify_command_line_flag("-n",
+                                             &number_of_continuation_steps);
+  CommandLineArgs::specify_command_line_flag("-f", &filename);
+
+  // OPTIONAL
+  CommandLineArgs::specify_command_line_flag(
+    "-o",
+    &output_directory,
+    "Optional: Output directory (e.g. data/bubble_steady/ )");
+
+  CommandLineArgs::parse_and_assign(argc, argv, &has_unrecognised_arg);
+
+  Problem_Parameter::restart_input_filename = filename;
+  if (output_directory != "")
+  {
+    Problem_Parameter::Doc_info.set_directory(output_directory);
+  }
+  else
+  {
+    Problem_Parameter::Doc_info.set_directory("data/bubble_steady/");
+  }
 
   // Create generalised Hookean constitutive equations
   Problem_Parameter::Constitutive_law_pt =
     new GeneralisedHookean(&Problem_Parameter::Nu);
 
-  // Output directory
-  Problem_Parameter::Doc_info.set_directory("data/bubble_steady/");
 
   // Open trace file
-  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() + "trace_bubble_test.dat");
+  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() +
+                                     "trace_bubble_test.dat");
   // Increase precision of output
   Problem_Parameter::Trace_file.precision(20);
 
   // Open norm file
-  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() + "norm.dat");
-  Problem_Parameter::OccluHeight_file.open(Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
-  Problem_Parameter::UpperWall_file.open(Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
+  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() +
+                                    "norm.dat");
+  Problem_Parameter::OccluHeight_file.open(
+    Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
+  Problem_Parameter::UpperWall_file.open(
+    Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
 
   Problem_Parameter::Length = 4;
   Problem_Parameter::Major_Radius = 0.46;
@@ -251,6 +280,7 @@ int main(int argc, char** argv)
   /// i_measure in hele_shaw_interface_elements_with_integrals.h). But that
   /// number can be changed here
   Problem_Parameter::n_integral_measures = 13;
+
 
   BubbleInChannelProblem<MyNewElement> problem;
   problem.set_initial_condition();
@@ -291,8 +321,9 @@ int main(int argc, char** argv)
   // double U = problem.get_U();
   double Q = problem.get_Q();
 
-  for (int m = 0; m < 1000; m++)
+  for (int m = 0; m < number_of_continuation_steps; m++)
   {
+    std::cout << "m: " << m << std::endl;
     Q += dQ;
     problem.set_Q(Q);
 
@@ -317,8 +348,6 @@ int main(int argc, char** argv)
     std::cout << "======================" << std::endl;
     problem.reset_lagrangian_coordinates();
   }
-
-  return 0;
 
 #ifdef OOMPH_HAS_MPI
   MPI_Helpers::finalize();

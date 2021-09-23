@@ -45,6 +45,7 @@
 using namespace std;
 using namespace oomph;
 
+#include "problem_parameter.h"
 #include "hele_shaw_interface_elements_with_integrals_weakly.h"
 #include "Thele_shaw_elements.h"
 #include "hele_shaw_flux_elements.h"
@@ -220,24 +221,59 @@ int main(int argc, char** argv)
   MPI_Helpers::init(argc, argv);
 #endif
 
-  CommandLineArgs::setup(argc, argv);
+  double delta;
+  string filename = "";
+  string output_directory = "";
+  bool has_unrecognised_arg = false;
+
+  // REQUIRED
+  CommandLineArgs::specify_command_line_flag("-d", &delta, "delta (+/- 1));");
+  CommandLineArgs::specify_command_line_flag("-f", &filename);
+
+  // OPTIONAL
+  CommandLineArgs::specify_command_line_flag(
+    "-o",
+    &output_directory,
+    "Optional: Output directory (e.g. data/bubble_steady_weakly_nonlinear/ )");
+
+  CommandLineArgs::parse_and_assign(argc, argv, &has_unrecognised_arg);
+
+  if ((delta != 1) && (delta != -1))
+  {
+    throw OomphLibError("Input delta not equal to either +/- 1.",
+                        "bubble_steady_weakly_nonlinear::main(...)",
+                        OOMPH_EXCEPTION_LOCATION);
+  }
+
+  if (output_directory != "")
+  {
+    Problem_Parameter::Doc_info.set_directory(output_directory);
+  }
+  else
+  {
+    Problem_Parameter::Doc_info.set_directory(
+      "data/bubble_steady_weakly_nonlinear/");
+  }
+
+  Problem_Parameter::restart_input_filename = filename;
 
   // Create generalised Hookean constitutive equations
   Problem_Parameter::Constitutive_law_pt =
     new GeneralisedHookean(&Problem_Parameter::Nu);
 
-  // Output directory
-  Problem_Parameter::Doc_info.set_directory("data/bubble_steady_weakly_nonlinear/");
-
   // Open trace file
-  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() + "trace_bubble_test.dat");
+  Problem_Parameter::Trace_file.open(Problem_Parameter::Doc_info.directory() +
+                                     "trace_bubble_test.dat");
   // Increase precision of output
   Problem_Parameter::Trace_file.precision(20);
 
   // Open norm file
-  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() + "norm.dat");
-  Problem_Parameter::OccluHeight_file.open(Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
-  Problem_Parameter::UpperWall_file.open(Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
+  Problem_Parameter::Norm_file.open(Problem_Parameter::Doc_info.directory() +
+                                    "norm.dat");
+  Problem_Parameter::OccluHeight_file.open(
+    Problem_Parameter::Doc_info.directory() + "Occlusion_Height.dat");
+  Problem_Parameter::UpperWall_file.open(
+    Problem_Parameter::Doc_info.directory() + "UpperWall_trace.dat");
 
   Problem_Parameter::Length = 4;
   Problem_Parameter::Major_Radius = 0.46;
@@ -316,17 +352,12 @@ int main(int argc, char** argv)
   }
 
   // Choose the value of delta
-  double delta;
   double hessian = 1e-4;
   double tressian = 1e-3;
 
   // Testing if required
   bool bisection;
 
-  std::cout << " " << std::endl;
-  std::cout << "What do you require delta to be? (+/- 1.0)" << std::endl;
-  std::cin >> delta;
-  std::cout << " " << std::endl;
   std::cout << "delta is" << delta << std::endl;
   std::cout << "Hessian tolerance is " << hessian << std::endl;
   std::cout << "Tressian tolerance is " << tressian << std::endl;

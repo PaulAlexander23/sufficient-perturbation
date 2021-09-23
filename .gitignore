@@ -1,3 +1,5 @@
+# Force include if required
+
 # 
 *.o
 *.a
@@ -15,3 +17,7 @@ bubble_unsteady
 # Makefiles
 Makefile
 Makefile.in
+
+# Testing files
+Validation/
+*.dat.gz
