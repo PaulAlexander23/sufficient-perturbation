@@ -1,6 +1,10 @@
-# Hele-Shaw bubble
+# Sufficient Perturbation
 
-Extracted from the suplementary material for the article "The influence of invariant solutions on the transient behaviour of an air bubble in a Hele-Shaw channel." published in Proc. R. Soc. A, 2019 by J. S. Keeler et al.
+A finite-element based numerical simulation program to investigate the required perturbation of a bubble enclosed in a Hele-Shaw channel flow for transient and long-term dynamics.
+
+Adapted from the suplementary material for the article "The influence of invariant solutions on the transient behaviour of an air bubble in a Hele-Shaw channel." published in Proc. R. Soc. A, 2019 by J. S. Keeler et al.
+
+Academic correspondence email: johnpaul.alexander@manchester.ac.uk.
 
 ## Installation
 
