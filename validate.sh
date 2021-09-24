@@ -1,10 +1,10 @@
-#! /bin/sh
+#!/usr/bin/sh
 
 # Get the OOPMH-LIB root directory from a makefile
 # OOMPH_ROOT_DIR=$(make -s --no-print-directory print-top_builddir)
 
 #Set the number of tests to be checked
-NUM_TESTS=2
+EXPECTED_NUM_TESTS=1
 
 # Setup validation directory
 #---------------------------
@@ -30,11 +30,13 @@ echo "  " `pwd` >> validation.log
 echo " " >> validation.log
 cat bubble_steady/* > bubble_steady.dat
 
-if test "$1" = "no_fpdiff"; then
-  echo "dummy [OK] -- Can't run fpdiff.py because we don't have python or validata" >> validation.log
+diff=$(zcmp ../validata/bubble_steady.dat.gz bubble_steady.dat )
+if [ $? != 0 ]; then
+    echo "[ERROR] Compare failed to run." >> validation.log
+elif [ $diff ]; then
+    echo "[FAILED]" >> validation.log
 else
-../../../bin/fpdiff.py ../validata/bubble_steady.dat.gz  \
-         bubble_steady.dat >> validation.log
+    echo "[OK]" >> validation.log
 fi
 #-----------------------------------------
 
@@ -82,11 +84,13 @@ echo "  " `pwd` >> validation.log
 echo " " >> validation.log
 cat bubble_unsteady/* > bubble_unsteady.dat
 
-if test "$1" = "no_fpdiff"; then
-  echo "dummy [OK] -- Can't run fpdiff.py because we don't have python or validata" >> validation.log
+diff=$(zcmp ../validata/bubble_unsteady.dat.gz bubble_unsteady.dat )
+if [ $? != 0 ]; then
+    echo "[ERROR] Compare failed to run." >> validation.log
+elif [ $diff ]; then
+    echo "[FAILED]" >> validation.log
 else
-../../../bin/fpdiff.py ../validata/bubble_unsteady.dat.gz  \
-         bubble_unsteady.dat >> validation.log
+    echo "[OK]" >> validation.log
 fi
 #-----------------------------------------
 
@@ -99,7 +103,30 @@ cd ..
 # 0 if all tests has passed.
 # 1 if some tests failed.
 # 2 if there are more 'OK' than expected.
-. ../../bin/validate_ok_count
+ACTUAL_NUM_TESTS_PASSED=$(grep OK Validation/validation.log | wc -l)
+ACTUAL_NUM_TESTS_FAILED=$(grep FAILED Validation/validation.log | wc -l)
+ACTUAL_NUM_TESTS_ERROR=$(grep ERROR Validation/validation.log | wc -l)
+if [ $ACTUAL_NUM_TESTS_ERROR > 0 ]; then
+    echo "Error in testing scripts. Check validation.log."
+    return 1
+fi
+if [ $ACTUAL_NUM_TESTS_PASSED > $EXPECTED_NUM_TESTS ]; then
+if [ $ACTUAL_NUM_TESTS_FAILED > 0 ]; then
+    echo "Failed test. Check validation.log."
+    return 1
+fi
+if [ $ACTUAL_NUM_TESTS_PASSED > $EXPECTED_NUM_TESTS ]; then
+    echo "Passed more tests than expected! Check EXPECTED_NUM_TESTS and validation.log."
+    return 2
+fi
+if [ $ACTUAL_NUM_TESTS_PASSED = $EXPECTED_NUM_TESTS ]; then
+    echo "Passed all $(ACTUAL_NUM_TESTS_PASSED) tests."
+    return 0
+fi
+if [ $ACTUAL_NUM_TESTS_PASSED < $EXPECTED_NUM_TESTS ]; then
+    echo "Passed less tests than expected! Check EXPECTED_NUM_TESTS and validation.log."
+    return 1
+fi
 
 # Never get here
 exit 10

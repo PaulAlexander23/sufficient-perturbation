@@ -14,10 +14,6 @@ bubble_unsteady
 # Hidden files
 .*
 
-# Makefiles
-Makefile
-Makefile.in
-
 # Testing files
 Validation/
 *.dat.gz

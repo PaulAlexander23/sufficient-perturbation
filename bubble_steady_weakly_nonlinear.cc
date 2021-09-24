@@ -34,11 +34,6 @@
 #include "constitutive.h"
 #include "fluid_interface.h"
 
-// Include cfortran.h and the header for the FORTRAN ARPACK routines
-#include "../../src/generic/cfortran.h"
-#include "../../src/generic/eigen_solver.h"
-#include "../../src/generic/linear_solver.h"
-
 // The mesh
 #include "meshes/triangle_mesh.h"
 
