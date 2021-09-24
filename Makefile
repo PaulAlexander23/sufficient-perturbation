@@ -60,50 +60,18 @@ SHARED_LIBRARY_FLAGS=-Wl,--rpath -Wl,$(OOMPH-LIB_INSTALL_LOCATION)/build/lib
 # the more specific ones before the more general ones!
 OOMPH-LIB_LIBS=-lconstitutive -lsolid -lrigid_body -lfluid_interface -lgeneric 
  
-build: bubble_steady bubble_steady_weakly_nonlinear bubble_unsteady
+build: bubble_unsteady
 
 test: build
 	./validate.sh
 
 clean:
-	rm -rf bubble_steady.o bubble_steady
-	rm -rf bubble_steady_weakly_nonlinear.o bubble_steady_weakly_nonlinear
 	rm -rf bubble_unsteady.o bubble_unsteady
-
-run_bubble_steady:
-	./bubble_steady -n 4 -f restart_AS1.dat -o data/bubble_steady/ > \
-		OUTPUT_bubble_steady
-
-run_bubble_steady_weakly_nonlinear:
-	./bubble_steady_weakly_nonlinear -d 1 -f restart_AS1.dat \
-		-o data/bubble_steady_weakly_nonlinear/ > OUTPUT_bubble_steady_weakly_nonlinear
 
 run_bubble_unsteady:
 	./bubble_unsteady -n 4 -r 0.5 -c 0.01 -q 1 -o data/bubble_unsteady/ > \
 		OUTPUT_bubble_unsteady
 
-
-bubble_steady.o: bubble_steady.cc
-	 g++ $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
-	       -I$(OOMPH-LIB_INCLUDE_DIR) \
-		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
-  
-bubble_steady: bubble_steady.o
-	 g++ $(SHARED_LIBRARY_FLAGS) $< -o $@ \
-	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
-
-bubble_steady_weakly_nonlinear.o: bubble_steady_weakly_nonlinear.cc
-	 g++ $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
-	       -I$(OOMPH-LIB_INCLUDE_DIR) \
-		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
-  
-bubble_steady_weakly_nonlinear: bubble_steady_weakly_nonlinear.o
-	 g++ $(SHARED_LIBRARY_FLAGS) $< -o $@ \
-	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
 
 bubble_unsteady.o: bubble_unsteady.cc
 	 g++ $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \

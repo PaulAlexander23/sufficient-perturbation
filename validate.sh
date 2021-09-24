@@ -14,58 +14,6 @@ mkdir Validation
 
 cd Validation
 
-# Validation for bubble steady
-#-----------------------------------------
-mkdir bubble_steady
-echo "Running bubble steady validation "
-../bubble_steady -n 4 -f ../restart_AS1.dat -o bubble_steady/ > OUTPUT_bubble_steady
-echo "done"
-echo " " >> validation.log
-echo "Bubble steady validation" >> validation.log
-echo "--------------------------" >> validation.log
-echo " " >> validation.log
-echo "Validation directory: " >> validation.log
-echo " " >> validation.log
-echo "  " `pwd` >> validation.log
-echo " " >> validation.log
-cat bubble_steady/* > bubble_steady.dat
-
-diff=$(zcmp ../validata/bubble_steady.dat.gz bubble_steady.dat )
-if [ $? != 0 ]; then
-    echo "[ERROR] Compare failed to run." >> validation.log
-elif [ $diff ]; then
-    echo "[FAILED]" >> validation.log
-else
-    echo "[OK]" >> validation.log
-fi
-#-----------------------------------------
-
-# Validation for bubble steady weakly nonlinear
-#-----------------------------------------
-#  mkdir bubble_steady_weakly_nonlinear
-#  echo "Running bubble steady weakly nonlinear validation "
-#  ../bubble_steady_weakly_nonlinear -d 1 -f ../restart_AS1.dat -o bubble_steady_weakly_nonlinear/ > \
-#      OUTPUT_bubble_steady_weakly_nonlinear
-#  echo "done"
-#  echo " " >> validation.log
-#  echo "Bubble steady weakly nonlinear validation" >> validation.log
-#  echo "--------------------------" >> validation.log
-#  echo " " >> validation.log
-#  echo "Validation directory: " >> validation.log
-#  echo " " >> validation.log
-#  echo "  " `pwd` >> validation.log
-#  echo " " >> validation.log
-#  cat bubble_steady_weakly_nonlinear/* > bubble_steady_weakly_nonlinear.dat
-#  
-#  exit 0 # Use to create `gzip bubble_steady_weakly_nonlinear.dat` for comparison
-#  
-#  if test "$1" = "no_fpdiff"; then
-#    echo "dummy [OK] -- Can't run fpdiff.py because we don't have python or validata" >> validation.log
-#  else
-#  ../../../bin/fpdiff.py ../validata/bubble_steady_weakly_nonlinear.dat.gz  \
-#           bubble_steady_weakly_nonlinear.dat >> validation.log
-#  fi
-#-----------------------------------------
 
 # Validation for bubble unsteady
 #-----------------------------------------
