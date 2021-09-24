@@ -59,28 +59,53 @@ SHARED_LIBRARY_FLAGS=-Wl,--rpath -Wl,$(OOMPH-LIB_INSTALL_LOCATION)/build/lib
 # but remember that the order of the libraries matters: List the
 # the more specific ones before the more general ones!
 OOMPH-LIB_LIBS=-lconstitutive -lsolid -lrigid_body -lfluid_interface -lgeneric 
+
+CC=g++
+LD=g++
+
+SRC_DIR=src/
+BUILD_DIR=build/
+BIN_DIR=bin/
+
+SRC=$(foreach individual_dir,$(SRC_DIR),$(wildcard $(individual_dir)*.cpp))
+OBJ=$(patsubst src/%.cpp,build/%.o,$(SRC))
+INCLUDE_DIR=$(addprefix -I,$(SRC_DIR))
+
+vpath %.cpp $(SRC_DIR)
  
-build: bubble_unsteady
+build: $(BIN_DIR)bubble_unsteady.out
 
 test: build
-	./validate.sh
+	scripts/validate.sh
 
 clean:
-	rm -rf bubble_unsteady.o bubble_unsteady
+	rm -rf build/
+
+clean-all: clean
+	rm -rf bin/
 
 run_bubble_unsteady:
-	./bubble_unsteady -n 4 -r 0.5 -c 0.01 -q 1 -o data/bubble_unsteady/ > \
+	$(BIN_DIR)bubble_unsteady -n 4 -r 0.5 -c 0.01 -q 1 -o data/bubble_unsteady/ > \
 		OUTPUT_bubble_unsteady
 
+check-build-dir: $(BUILD_DIR)
 
-bubble_unsteady.o: bubble_unsteady.cc
-	 g++ $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
-	       -I$(OOMPH-LIB_INCLUDE_DIR) \
+$(BUILD_DIR):
+	mkdir -p $@
+
+check-bin-dir: $(BIN_DIR)
+
+$(BIN_DIR):
+	mkdir -p $@
+
+$(OBJ): $(SRC) check-build-dir
+	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
+	       -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
 		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
 	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
   
-bubble_unsteady: bubble_unsteady.o
-	 g++ $(SHARED_LIBRARY_FLAGS) $< -o $@ \
+$(BIN_DIR)bubble_unsteady.out: $(OBJ) check-bin-dir
+	$(LD) $(SHARED_LIBRARY_FLAGS) $(OBJ) -o $@ \
 	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
 	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
 

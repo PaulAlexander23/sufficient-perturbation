@@ -29,7 +29,6 @@
 // Generic routines
 #include "generic.h"
 
-
 // The equations
 #include "solid.h"
 #include "constitutive.h"

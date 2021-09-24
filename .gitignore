@@ -1,15 +1,12 @@
-# Force include if required
-
 # 
 *.o
-*.a
 *.out
-bubble_steady
-bubble_steady_weakly_nonlinear
-bubble_unsteady
 
 # Hidden files
 .*
+
+# ctags
+tags
 
 # Testing files
 Validation/
