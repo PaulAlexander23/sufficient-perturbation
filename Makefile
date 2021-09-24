@@ -21,16 +21,16 @@
 OOMPH-LIB_INSTALL_LOCATION=/home/paul/Repositories/oomph-lib-jack
  
 # Flags for C pre-processor 
-AM_CPPFLAGS=-DHAVE_CONFIG_H -I. -I../..  -isystem /home/paul/Repositories/oomph-lib-jack/external_distributions/trilinos/trilinos_default_installation/include -DOOMPH_HAS_TRILINOS -isystem /home/paul/Repositories/oomph-lib-jack/external_distributions/boost/boost_default_installation/include -DOOMPH_HAS_BOOST -isystem /home/paul/Repositories/oomph-lib-jack/external_distributions/gmp/gmp_default_installation/include -DOOMPH_HAS_GMP -isystem /home/paul/Repositories/oomph-lib-jack/external_distributions/mpfr/mpfr_default_installation/include -DOOMPH_HAS_MPFR -isystem /home/paul/Repositories/oomph-lib-jack/external_distributions/cgal/cgal_default_installation/include -DOOMPH_HAS_CGAL -DOOMPH_HAS_STACKTRACE -DOOMPH_HAS_UNISTDH -DOOMPH_HAS_FPUCONTROLH -DOOMPH_HAS_MALLOCH -DOOMPH_HAS_TRIANGLE_LIB -DOOMPH_HAS_TETGEN_LIB -DUSING_OOMPH_SUPERLU -DUSING_OOMPH_SUPERLU_DIST -I/home/paul/Repositories/oomph-lib-jack/build/include
+AM_CPPFLAGS=-DHAVE_CONFIG_H -I. -I../..  -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/trilinos/trilinos_default_installation/include -DOOMPH_HAS_TRILINOS -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/boost/boost_default_installation/include -DOOMPH_HAS_BOOST -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/gmp/gmp_default_installation/include -DOOMPH_HAS_GMP -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/mpfr/mpfr_default_installation/include -DOOMPH_HAS_MPFR -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/cgal/cgal_default_installation/include -DOOMPH_HAS_CGAL -DOOMPH_HAS_STACKTRACE -DOOMPH_HAS_UNISTDH -DOOMPH_HAS_FPUCONTROLH -DOOMPH_HAS_MALLOCH -DOOMPH_HAS_TRIANGLE_LIB -DOOMPH_HAS_TETGEN_LIB -DUSING_OOMPH_SUPERLU -DUSING_OOMPH_SUPERLU_DIST -I$(OOMPH-LIB_INSTALL_LOCATION)/build/include
  
 # Flags for C++ compiler 
 CXXFLAGS= -O3 -Wall
  
 # Library include directory: This is where all the header files live
-OOMPH-LIB_INCLUDE_DIR=/home/paul/Repositories/oomph-lib-jack/build/include -I/home/paul/Repositories/oomph-lib-jack
+OOMPH-LIB_INCLUDE_DIR=$(OOMPH-LIB_INSTALL_LOCATION)/build/include -I$(OOMPH-LIB_INSTALL_LOCATION)
  
 # Library directory: This is where all of oomph-lib's sub-libraries live
-OOMPH-LIB_LIB_DIR=/home/paul/Repositories/oomph-lib-jack/build/lib
+OOMPH-LIB_LIB_DIR=$(OOMPH-LIB_INSTALL_LOCATION)/build/lib
  
 # These are the external (3rd party) libraries that are distributed
 # with oomph-lib and that we always link against
@@ -38,7 +38,7 @@ OOMPH-LIB_EXTERNAL_LIBS=-lml -lifpack -lamesos -lanasazi -laztecoo -lepetraext -
  
 # This specifies where libraries built from third party 
 # distributions can be found
-EXTERNAL_DIST_LIBRARIES=-L/home/paul/Repositories/oomph-lib-jack/external_distributions/trilinos/trilinos_default_installation/lib -L/home/paul/Repositories/oomph-lib-jack/external_distributions/boost/boost_default_installation/lib -Wl,-rpath,/home/paul/Repositories/oomph-lib-jack/external_distributions/boost/boost_default_installation/lib -L/home/paul/Repositories/oomph-lib-jack/external_distributions/gmp/gmp_default_installation/lib -L/home/paul/Repositories/oomph-lib-jack/external_distributions/mpfr/mpfr_default_installation/lib -L/home/paul/Repositories/oomph-lib-jack/external_distributions/cgal/cgal_default_installation/lib -Wl,-rpath,/home/paul/Repositories/oomph-lib-jack/external_distributions/cgal/cgal_default_installation/lib
+EXTERNAL_DIST_LIBRARIES=-L$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/trilinos/trilinos_default_installation/lib -L$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/boost/boost_default_installation/lib -Wl,-rpath,$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/boost/boost_default_installation/lib -L$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/gmp/gmp_default_installation/lib -L$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/mpfr/mpfr_default_installation/lib -L$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/cgal/cgal_default_installation/lib -Wl,-rpath,$(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/cgal/cgal_default_installation/lib
  
 # This is additional machine-specific linking information that 
 # allows mixed-language compilation/linking
@@ -46,10 +46,10 @@ FLIBS=-L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../
  
 # Flags required for the use of shared libraries 
 # Linux: Replace the above line with the following
-SHARED_LIBRARY_FLAGS=-Wl,--rpath -Wl,/home/paul/Repositories/oomph-lib-jack/build/lib
+SHARED_LIBRARY_FLAGS=-Wl,--rpath -Wl,$(OOMPH-LIB_INSTALL_LOCATION)/build/lib
  
 # Mac OSX without clang(?): Replace the above line with the following
-#SHARED_LIBRARY_FLAGS= --rpath=/home/paul/Repositories/oomph-lib-jack/build/lib
+#SHARED_LIBRARY_FLAGS= --rpath=$(OOMPH-LIB_INSTALL_LOCATION)/build/lib
  
 # Problem-specific information -- edit this for your driver code 
  
@@ -62,7 +62,7 @@ OOMPH-LIB_LIBS=-lconstitutive -lsolid -lrigid_body -lfluid_interface -lgeneric
  
 build: bubble_steady bubble_steady_weakly_nonlinear bubble_unsteady
 
-test:
+test: build
 	./validate.sh
 
 clean:
