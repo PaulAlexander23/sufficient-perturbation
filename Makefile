@@ -88,6 +88,9 @@ run_bubble_unsteady:
 	$(BIN_DIR)bubble_unsteady -n 4 -r 0.5 -c 0.01 -q 1 -o data/bubble_unsteady/ > \
 		OUTPUT_bubble_unsteady
 
+doc:
+	doxygen Doxyfile
+
 check-build-dir: $(BUILD_DIR)
 
 $(BUILD_DIR):
