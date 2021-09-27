@@ -85,7 +85,7 @@ clean-all: clean
 	rm -rf bin/
 
 run_bubble_unsteady:
-	$(BIN_DIR)bubble_unsteady -n 4 -r 0.5 -c 0.01 -q 1 -o data/bubble_unsteady/ > \
+	$(BIN_DIR)bubble_unsteady.out -n 4 -r 0.5 -c 0.01 -q 1 -o data/bubble_unsteady/ > \
 		OUTPUT_bubble_unsteady
 
 doc:
