@@ -1,3 +1,7 @@
+#pragma once
+
+#include "problem_parameter.h"
+
 template<class ELEMENT>
 class HeleShawVolumeConstraintElement
   : public LineVolumeConstraintBoundingElement,

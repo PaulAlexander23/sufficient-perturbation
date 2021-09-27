@@ -1,3 +1,5 @@
+#pragma once
+
 //==start_of_namespace==============================
 /// Namespace for Problem Parameter
 //==================================================

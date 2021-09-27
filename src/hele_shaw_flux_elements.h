@@ -27,6 +27,8 @@
 // LIC//====================================================================
 // Header file for elements that are used to apply prescribed flux
 // boundary conditions to the Poisson equations
+#pragma once
+
 #ifndef OOMPH_HELE_SHAW_FLUX_ELEMENTS_HEADER
 #define OOMPH_HELE_SHAW_FLUX_ELEMENTS_HEADER
 
