@@ -25,6 +25,9 @@
 // LIC// The authors may be contacted at oomph-lib@maths.man.ac.uk.
 // LIC//
 // LIC//====================================================================
+
+#pragma once
+
 // Header file for THeleShaw elements
 #ifndef OOMPH_THELE_SHAW_ELEMENTS_HEADER
 #define OOMPH_THELE_SHAW_ELEMENTS_HEADER
@@ -34,7 +37,6 @@
 #ifdef HAVE_CONFIG_H
 #include <oomph-lib-config.h>
 #endif
-
 
 // OOMPH-LIB headers
 // hierher uncomment these

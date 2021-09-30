@@ -29,23 +29,11 @@
 // Generic routines
 #include "generic.h"
 
-// The equations
-#include "constitutive.h"
-#include "fluid_interface.h"
-#include "solid.h"
-
-// The mesh
-#include "meshes/triangle_mesh.h"
-
 using namespace std;
 using namespace oomph;
 
-#include "Thele_shaw_elements.h"
-#include "custom_hele_shaw_elements_with_integrals.h"
 #include "hele_shaw_bubble_problem_with_integrals.h"
-#include "hele_shaw_flux_elements.h"
-#include "hele_shaw_interface_elements_with_integrals.h"
-#include "modified_volume_constraint_elements_with_integrals.h"
+#include "custom_hele_shaw_elements_with_integrals.h"
 #include "problem_parameter.h"
 
 /////////////////////////////////////////////////////////////////

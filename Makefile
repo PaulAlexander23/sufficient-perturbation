@@ -63,15 +63,18 @@ OOMPH-LIB_LIBS=-lconstitutive -lsolid -lrigid_body -lfluid_interface -lgeneric
 CC=g++
 LD=g++
 
+LIB_DIR=lib/
 SRC_DIR=src/
 BUILD_DIR=build/
 BIN_DIR=bin/
 
-SRC=$(foreach individual_dir,$(SRC_DIR),$(wildcard $(individual_dir)*.cpp))
-OBJ=$(patsubst src/%.cpp,build/%.o,$(SRC))
-INCLUDE_DIR=$(addprefix -I,$(SRC_DIR))
+INCLUDE_DIR=$(addprefix -I,$(LIB_DIR))
 
-vpath %.cpp $(SRC_DIR)
+LIB=$(foreach individual_dir,$(LIB_DIR),$(wildcard $(individual_dir)*.cpp))
+SRC=$(foreach individual_dir,$(SRC_DIR),$(wildcard $(individual_dir)*.cpp))
+OBJ=$(patsubst lib/%.cpp,build/%.o,$(LIB))
+
+vpath %.cpp $(LIB_DIR)
  
 build: $(BIN_DIR)bubble_unsteady.out
 
@@ -101,14 +104,25 @@ check-bin-dir: $(BIN_DIR)
 $(BIN_DIR):
 	mkdir -p $@
 
-$(OBJ): $(SRC) check-build-dir
+$(OBJ): $(LIB) check-build-dir
 	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
 	       -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
 		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
 	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
   
-$(BIN_DIR)bubble_unsteady.out: $(OBJ) check-bin-dir
-	$(LD) $(SHARED_LIBRARY_FLAGS) $(OBJ) -o $@ \
-	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
+#$(BUILD_DIR)bubble_unsteady.o: $(OBJ)
+#	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) $(OBJ) -c $(SRC_DIR)bubble_unsteady.cpp -o $@ \
+#	       -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
+#		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
+#	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
 
+#$(BIN_DIR)bubble_unsteady.out: $(OBJ) $(BUILD_DIR)bubble_unsteady.o check-bin-dir
+#	$(LD) $(SHARED_LIBRARY_FLAGS) $(OBJ) $(BUILD_DIR)bubble_unsteady.o -o $@ \
+#	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
+#	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
+
+$(BIN_DIR)bubble_unsteady.out: check-bin-dir
+	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) $(SHARED_LIBRARY_FLAGS) $(LIB) $(SRC_DIR)bubble_unsteady.cpp -o $@ \
+	   -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
+	   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
+		$(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 

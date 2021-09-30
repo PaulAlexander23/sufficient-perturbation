@@ -39,7 +39,9 @@
 #endif
 
 // oomph-lib includes
-#include "../../src/generic/Qelements.h"
+#include "generic/Qelements.h"
+
+#include "hele_shaw_equations.h"
 
 namespace oomph
 {

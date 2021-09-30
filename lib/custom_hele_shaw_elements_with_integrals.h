@@ -1,4 +1,10 @@
+#pragma once
+
 #include <string>
+
+#include "projectable_hele_shaw_element.h"
+#include "Thele_shaw_elements.h"
+#include "solid/solid_elements.h"
 
 namespace oomph
 {

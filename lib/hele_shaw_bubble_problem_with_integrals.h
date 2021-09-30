@@ -1,6 +1,8 @@
 #pragma once
 
 #include "generic.h"
+#include "meshes/triangle_mesh.template.h"
+
 #include "modified_volume_constraint_elements_with_integrals.h"
 
 //==start_of_problem_class============================================

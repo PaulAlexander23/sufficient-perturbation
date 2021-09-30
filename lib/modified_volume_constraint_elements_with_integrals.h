@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fluid_interface/constrained_volume_elements.h"
+
 #include "problem_parameter.h"
 
 template<class ELEMENT>
