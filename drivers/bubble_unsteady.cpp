@@ -28,6 +28,7 @@
 
 // Generic routines
 #include "generic.h"
+#include "meshes.h"
 
 using namespace std;
 using namespace oomph;
@@ -35,7 +36,6 @@ using namespace oomph;
 #include "hele_shaw_bubble_problem_with_integrals.h"
 #include "custom_hele_shaw_elements_with_integrals.h"
 #include "problem_parameter.h"
-
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////

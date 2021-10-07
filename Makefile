@@ -21,7 +21,7 @@
 OOMPH-LIB_INSTALL_LOCATION=/home/paul/Repositories/oomph-lib-jack
  
 # Flags for C pre-processor 
-AM_CPPFLAGS=-DHAVE_CONFIG_H -I. -I../..  -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/trilinos/trilinos_default_installation/include -DOOMPH_HAS_TRILINOS -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/boost/boost_default_installation/include -DOOMPH_HAS_BOOST -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/gmp/gmp_default_installation/include -DOOMPH_HAS_GMP -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/mpfr/mpfr_default_installation/include -DOOMPH_HAS_MPFR -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/cgal/cgal_default_installation/include -DOOMPH_HAS_CGAL -DOOMPH_HAS_STACKTRACE -DOOMPH_HAS_UNISTDH -DOOMPH_HAS_FPUCONTROLH -DOOMPH_HAS_MALLOCH -DOOMPH_HAS_TRIANGLE_LIB -DOOMPH_HAS_TETGEN_LIB -DUSING_OOMPH_SUPERLU -DUSING_OOMPH_SUPERLU_DIST -I$(OOMPH-LIB_INSTALL_LOCATION)/build/include
+AM_CPPFLAGS=-DHAVE_CONFIG_H -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/trilinos/trilinos_default_installation/include -DOOMPH_HAS_TRILINOS -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/boost/boost_default_installation/include -DOOMPH_HAS_BOOST -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/gmp/gmp_default_installation/include -DOOMPH_HAS_GMP -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/mpfr/mpfr_default_installation/include -DOOMPH_HAS_MPFR -isystem $(OOMPH-LIB_INSTALL_LOCATION)/external_distributions/cgal/cgal_default_installation/include -DOOMPH_HAS_CGAL -DOOMPH_HAS_STACKTRACE -DOOMPH_HAS_UNISTDH -DOOMPH_HAS_FPUCONTROLH -DOOMPH_HAS_MALLOCH -DOOMPH_HAS_TRIANGLE_LIB -DOOMPH_HAS_TETGEN_LIB -DUSING_OOMPH_SUPERLU -DUSING_OOMPH_SUPERLU_DIST -I$(OOMPH-LIB_INSTALL_LOCATION)/build/include
  
 # Flags for C++ compiler 
 CXXFLAGS= -O3 -Wall
@@ -60,26 +60,33 @@ SHARED_LIBRARY_FLAGS=-Wl,--rpath -Wl,$(OOMPH-LIB_INSTALL_LOCATION)/build/lib
 # the more specific ones before the more general ones!
 OOMPH-LIB_LIBS=-lconstitutive -lsolid -lrigid_body -lfluid_interface -lgeneric 
 
+
+SRC_DIR=src/
+DRIVERS_DIR=drivers/
+BIN_DIR=bin/
+BUILD_DIR=build/
+LIB_DIR=$(BUILD_DIR)lib/
+
+INCLUDE_DIR= -I$(SRC_DIR)
+
+SRC=$(foreach individual_dir,$(SRC_DIR),$(wildcard $(individual_dir)*.cpp))
+OBJ=$(patsubst $(SRC_DIR)%.cpp,$(LIB_DIR)%.o,$(SRC))
+
+DRIVERS=$(foreach individual_dir,$(DRIVERS_DIR),$(wildcard $(individual_dir)*.cpp))
+DRIVERS_OBJ=$(patsubst $(DRIVERS_DIR)%.cpp,$(DRIVERS_DIR)%.o,$(DRIVERS))
+
+OUT=$(patsubst $(DRIVERS_DIR)%.cpp,$(BIN_DIR)%.out,$(DRIVERS))
+
 CC=g++
 LD=g++
 
-LIB_DIR=lib/
-SRC_DIR=src/
-BUILD_DIR=build/
-BIN_DIR=bin/
-
-INCLUDE_DIR=$(addprefix -I,$(LIB_DIR))
-
-LIB=$(foreach individual_dir,$(LIB_DIR),$(wildcard $(individual_dir)*.cpp))
-SRC=$(foreach individual_dir,$(SRC_DIR),$(wildcard $(individual_dir)*.cpp))
-OBJ=$(patsubst lib/%.cpp,build/%.o,$(LIB))
-
-vpath %.cpp $(LIB_DIR)
- 
-build: $(BIN_DIR)bubble_unsteady.out
+build: $(OUT)
 
 test: build
 	scripts/validate.sh
+
+# Specify targets without explicit outputs as phony
+.PHONY: clean clean-all doc
 
 clean:
 	rm -rf build/
@@ -94,9 +101,9 @@ run_bubble_unsteady:
 doc:
 	doxygen Doxyfile
 
-check-build-dir: $(BUILD_DIR)
+check-lib-dir: $(LIB_DIR)
 
-$(BUILD_DIR):
+$(LIB_DIR):
 	mkdir -p $@
 
 check-bin-dir: $(BIN_DIR)
@@ -104,25 +111,27 @@ check-bin-dir: $(BIN_DIR)
 $(BIN_DIR):
 	mkdir -p $@
 
-$(OBJ): $(LIB) check-build-dir
+# -----------------------------------------------------------------------------
+
+# Compile sources
+$(LIB_DIR)%.o: $(SRC_DIR)%.cpp check-lib-dir
+	mkdir -p $(LIB_DIR)
 	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
 	       -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
 		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
 	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
   
-#$(BUILD_DIR)bubble_unsteady.o: $(OBJ)
-#	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) $(OBJ) -c $(SRC_DIR)bubble_unsteady.cpp -o $@ \
-#	       -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
-#		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-#	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
+# Compile drivers
+$(DRIVERS_DIR)%.o: $(DRIVERS_DIR)%.cpp
+	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) -c $< -o $@ \
+	       -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
+		   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
+	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
 
-#$(BIN_DIR)bubble_unsteady.out: $(OBJ) $(BUILD_DIR)bubble_unsteady.o check-bin-dir
-#	$(LD) $(SHARED_LIBRARY_FLAGS) $(OBJ) $(BUILD_DIR)bubble_unsteady.o -o $@ \
-#	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-#	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
-
-$(BIN_DIR)bubble_unsteady.out: check-bin-dir
-	$(CC) $(AM_CPPFLAGS)  $(CXXFLAGS) $(SHARED_LIBRARY_FLAGS) $(LIB) $(SRC_DIR)bubble_unsteady.cpp -o $@ \
-	   -I$(OOMPH-LIB_INCLUDE_DIR) $(INCLUDE_DIR) \
-	   -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
-		$(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
+# Link and create executables
+$(BIN_DIR)%.out: $(OBJ) $(DRIVERS_OBJ)
+	mkdir -p $(BIN_DIR)
+	$(LD) $(SHARED_LIBRARY_FLAGS) $^ -o $@ \
+			$(INCLUDE_DIR) \
+	       -L$(OOMPH-LIB_LIB_DIR) $(EXTERNAL_DIST_LIBRARIES) $(OOMPH-LIB_LIBS) \
+	        $(OOMPH-LIB_EXTERNAL_LIBS) $(FLIBS) 
